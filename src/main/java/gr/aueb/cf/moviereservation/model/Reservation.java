@@ -1,13 +1,10 @@
 package gr.aueb.cf.moviereservation.model;
 
-
+import gr.aueb.cf.moviereservation.core.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -16,8 +13,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Table(name = "screenings")
-public class Screening {
+@Table(name = "reservations")
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +23,10 @@ public class Screening {
     private String uuid;
 
     @Column(nullable = false)
-    private LocalDateTime screeningDateTime;
+    private String seatNumber;
 
-    @Column(nullable = false)
-    private Double price;
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
 
     @ColumnDefault("true")
     private Boolean isActive;
@@ -37,22 +34,16 @@ public class Screening {
     @PrePersist
     public void initializeUUID() {
         if (uuid == null) uuid = UUID.randomUUID().toString();
+        if (status == null) status = ReservationStatus.CREATED;
 
     }
 
     @ManyToOne
-    @JoinColumn(name="movie_id", nullable = false)
-    private Movie movie;
-
-    @Getter(AccessLevel.PRIVATE)
-    @OneToMany(mappedBy = "screening")
-    private Set<Reservation> reservations = new HashSet<>();
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "cinema_hall_id", nullable = false)
-    private CinemaHall cinemaHall;
-
-
-
+    @JoinColumn(name = "screening_id", nullable = false)
+    private Screening screening;
 
 }

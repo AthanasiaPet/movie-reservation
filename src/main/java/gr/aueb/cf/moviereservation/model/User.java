@@ -1,9 +1,12 @@
 package gr.aueb.cf.moviereservation.model;
 
+import gr.aueb.cf.moviereservation.core.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -27,6 +30,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -37,5 +43,9 @@ public class User {
     public void initializeUUID() {
         if (uuid == null) uuid = UUID.randomUUID().toString();
     }
+
+    @Getter(AccessLevel.PRIVATE)
+    @OneToMany(mappedBy = "user")
+    private Set<Reservation> reservations = new HashSet<>();
 
 }

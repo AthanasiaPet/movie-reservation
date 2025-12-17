@@ -1,11 +1,9 @@
 package gr.aueb.cf.moviereservation.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -15,9 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@Table(name = "screenings")
-public class Screening {
+@Table(name = "cinema_halls")
+public class CinemaHall {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +23,10 @@ public class Screening {
     private String uuid;
 
     @Column(nullable = false)
-    private LocalDateTime screeningDateTime;
+    private String hallName;
 
     @Column(nullable = false)
-    private Double price;
+    private Integer capacity;
 
     @ColumnDefault("true")
     private Boolean isActive;
@@ -40,19 +37,7 @@ public class Screening {
 
     }
 
-    @ManyToOne
-    @JoinColumn(name="movie_id", nullable = false)
-    private Movie movie;
-
     @Getter(AccessLevel.PRIVATE)
-    @OneToMany(mappedBy = "screening")
-    private Set<Reservation> reservations = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "cinema_hall_id", nullable = false)
-    private CinemaHall cinemaHall;
-
-
-
-
+    @OneToMany(mappedBy = "cinemaHall")
+    private Set<Screening> screenings = new HashSet<>();
 }

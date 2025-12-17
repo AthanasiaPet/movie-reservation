@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -41,5 +43,9 @@ public class Movie {
         if (uuid == null) uuid = UUID.randomUUID().toString();
 
     }
+
+    @Getter(AccessLevel.PRIVATE)
+    @OneToMany(mappedBy = "movie")
+    private Set<Screening> screenings = new HashSet<>();
 
 }
