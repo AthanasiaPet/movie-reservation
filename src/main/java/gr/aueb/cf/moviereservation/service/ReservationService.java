@@ -1,8 +1,12 @@
 package gr.aueb.cf.moviereservation.service;
 
 import gr.aueb.cf.moviereservation.model.Reservation;
+import gr.aueb.cf.moviereservation.model.Screening;
+import gr.aueb.cf.moviereservation.model.User;
 import gr.aueb.cf.moviereservation.repository.ReservationRepository;
+import gr.aueb.cf.moviereservation.repository.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +17,7 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final ScreeningRepository screeningRepository;
 
     public List<Reservation> findAll() {
         return reservationRepository.findAll();
@@ -30,7 +35,21 @@ public class ReservationService {
         return reservationRepository.findByScreening_Id(screeningId);
     }
 
-    public Reservation save(Reservation reservation) {
+    public Reservation createReservation(Long screeningId, String seatNumber) {
+        User user = (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        Screening screening = screeningRepository.findById(screeningId).orElseThrow(() -> new RuntimeException("Screning not found"));
+        Reservation reservation = Reservation.builder()
+                .user(user)
+                .screening(screening)
+                .seatNumber(seatNumber)
+                .isActive(true)
+                .build();
+
+
         return reservationRepository.save(reservation);
     }
 

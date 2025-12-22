@@ -34,9 +34,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                             .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                             .requestMatchers("/api/auth/login").permitAll()
-                            .requestMatchers("/api/movies").permitAll()
-                            .requestMatchers("/api/users").permitAll()
-                            .requestMatchers("/api/screenings").permitAll()
+                            .requestMatchers("/api/movies/**").permitAll()
+//                            .requestMatchers("/api/users").permitAll()
+                            .requestMatchers("/api/screenings/**").permitAll()
+                            .requestMatchers("/api/reservations/**").authenticated()
                             .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/**").authenticated()
                         )

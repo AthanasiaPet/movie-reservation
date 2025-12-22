@@ -1,6 +1,7 @@
 package gr.aueb.cf.moviereservation.api;
 
 
+import gr.aueb.cf.moviereservation.dto.ReservationRequestDTO;
 import gr.aueb.cf.moviereservation.model.Reservation;
 import gr.aueb.cf.moviereservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,9 @@ public class ReservationRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
-        return ResponseEntity.ok(reservationService.save(reservation));
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationRequestDTO dto) {
+        Reservation reservation = reservationService.createReservation(dto.getScreeningId(), dto.getSeatNumber());
+        return ResponseEntity.ok(reservation);
     }
 
 

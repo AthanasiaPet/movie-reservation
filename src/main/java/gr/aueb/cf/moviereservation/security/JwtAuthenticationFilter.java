@@ -22,6 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
@@ -29,18 +30,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NotNull HttpServletRequest request,@NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
 
+        System.out.println(">>> JWT FILTER HIT for path: " + request.getRequestURI());
+
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String username;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            System.out.println(">>> NO AUTH HEADER OR NOT BEARER");
             filterChain.doFilter(request, response);
             return;
         }
+        System.out.println(">>> AUTH HEADER FOUND");
 
         jwt = authHeader.substring(7).trim();
+        System.out.println(">>> JWT: " + jwt);
         username = jwtService.extractSubject(jwt);
+        System.out.println(">>> USERNAME FROM TOKEN: " + username);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -52,10 +59,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            System.out.println(">>> AUTH SET IN CONTEXT");
 
         }
 
         filterChain.doFilter(request, response);
+
     }
 
 }
