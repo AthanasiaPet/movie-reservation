@@ -28,8 +28,8 @@ public class JwtService {
         claims.put("role", role);
         return Jwts
                 .builder()
-                .setSubject(username)
                 .setClaims(claims)
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
