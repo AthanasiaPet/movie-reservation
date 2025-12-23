@@ -5,6 +5,6 @@ import gr.aueb.cf.moviereservation.core.enums.Genre;
 public record MovieCreateDTO (
         String title,
         String description,
-        String duration,
+        Integer duration,
         Genre genre
 ) {}

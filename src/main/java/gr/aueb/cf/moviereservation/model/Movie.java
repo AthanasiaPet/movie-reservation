@@ -1,5 +1,6 @@
 package gr.aueb.cf.moviereservation.model;
 
+import gr.aueb.cf.moviereservation.core.enums.Genre;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -32,8 +33,8 @@ public class Movie {
     @Column(nullable = false)
     private Integer duration;
 
-    @Column(nullable = false)
-    private String genre;
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
 
     @ColumnDefault("true")
     private Boolean isActive;

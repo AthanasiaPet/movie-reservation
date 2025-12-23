@@ -7,7 +7,7 @@ public record MovieReadDTO (
     String uuid,
     String title,
     String description,
-    String duration,
+    Integer duration,
     Genre genre
 ) {}
 
