@@ -11,11 +11,13 @@ public class MovieMapper {
     // Entity Movie to DTO
     public static MovieReadDTO toReadDTO(Movie movie) {
         return new MovieReadDTO(
+                movie.getId(),
                 movie.getUuid(),
                 movie.getTitle(),
                 movie.getDescription(),
                 movie.getDuration(),
-                movie.getGenre());
+                movie.getGenre(),
+                movie.getIsActive());
     }
 
     // DTO to Entity Movie

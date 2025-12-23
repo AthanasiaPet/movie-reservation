@@ -7,10 +7,12 @@ public class ScreeningMapper {
 
     //Entity Screening to DTO
     public static ScreeningReadDTO toReadDTO(Screening screening) {
-        return new ScreeningReadDTO(screening.getUuid(),
+        return new ScreeningReadDTO(screening.getId(),
+                screening.getUuid(),
                 screening.getMovie().getTitle(),
                 screening.getCinemaHall().getHallName(),
                 screening.getScreeningDateTime(),
-                screening.getPrice());
+                screening.getPrice(),
+                screening.getIsActive());
     }
 }

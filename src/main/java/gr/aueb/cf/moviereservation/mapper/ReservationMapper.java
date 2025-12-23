@@ -8,7 +8,12 @@ public class ReservationMapper {
     // Entity Reservation to DTO
     public static ReservationReadDTO toReadDTO(Reservation reservation) {
         return new ReservationReadDTO(
-                reservation.getUuid(), reservation.getScreening().getMovie().getTitle(), reservation.getScreening().getCinemaHall().getHallName(),
-                reservation.getSeatNumber(), reservation.getStatus());
+                reservation.getId(),
+                reservation.getUuid(),
+                reservation.getScreening().getMovie().getTitle(),
+                reservation.getScreening().getCinemaHall().getHallName(),
+                reservation.getSeatNumber(),
+                reservation.getStatus(),
+                reservation.getIsActive());
     }
 }
