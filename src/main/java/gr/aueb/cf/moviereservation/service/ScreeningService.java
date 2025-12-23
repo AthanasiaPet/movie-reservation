@@ -1,7 +1,12 @@
 package gr.aueb.cf.moviereservation.service;
 
 
+import gr.aueb.cf.moviereservation.dto.ScreeningCreateDTO;
+import gr.aueb.cf.moviereservation.model.CinemaHall;
+import gr.aueb.cf.moviereservation.model.Movie;
 import gr.aueb.cf.moviereservation.model.Screening;
+import gr.aueb.cf.moviereservation.repository.CinemaHallRepository;
+import gr.aueb.cf.moviereservation.repository.MovieRepository;
 import gr.aueb.cf.moviereservation.repository.ScreeningRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,8 @@ import java.util.Optional;
 public class ScreeningService {
 
     private final ScreeningRepository screeningRepository;
+    private final MovieRepository movieRepository;
+    private final CinemaHallRepository cinemaHallRepository;
 
     public List<Screening> findAll() {
         return screeningRepository.findAll();
@@ -31,9 +38,26 @@ public class ScreeningService {
         return screeningRepository.findByCinemaHall_Id(cinemaHallId);
     }
 
-    public Screening save(Screening screening) {
+
+    public Screening createScreening(ScreeningCreateDTO dto) {
+
+        Movie movie = movieRepository.findById(dto.movieId())
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        CinemaHall hall = cinemaHallRepository.findById(dto.cinemaHallId())
+                .orElseThrow(() -> new RuntimeException("Cinema hall not found"));
+
+        Screening screening = Screening.builder()
+                .movie(movie)
+                .cinemaHall(hall)
+                .screeningDateTime(dto.screeningDateTime())
+                .price(dto.price())
+                .isActive(true)
+                .build();
+
         return screeningRepository.save(screening);
     }
+
 
 
 

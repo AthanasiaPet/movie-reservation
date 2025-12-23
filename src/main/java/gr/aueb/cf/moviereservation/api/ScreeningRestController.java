@@ -1,5 +1,8 @@
 package gr.aueb.cf.moviereservation.api;
 
+import gr.aueb.cf.moviereservation.dto.ScreeningCreateDTO;
+import gr.aueb.cf.moviereservation.dto.ScreeningReadDTO;
+import gr.aueb.cf.moviereservation.mapper.ScreeningMapper;
 import gr.aueb.cf.moviereservation.model.Screening;
 import gr.aueb.cf.moviereservation.service.ScreeningService;
 import lombok.RequiredArgsConstructor;
@@ -16,32 +19,39 @@ public class ScreeningRestController {
     private final ScreeningService screeningService;
 
     @GetMapping
-    public ResponseEntity<List<Screening>> getAllScreenings() {
-        return ResponseEntity.ok(screeningService.findAll());
+    public ResponseEntity<List<ScreeningReadDTO>> getAllScreenings() {
+        List<ScreeningReadDTO> screenings = screeningService.findAll().stream().map(ScreeningMapper::toReadDTO).toList();
+        return ResponseEntity.ok(screenings);
     }
 
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<Screening> getScreeningByUuid(@PathVariable String uuid) {
+    public ResponseEntity<ScreeningReadDTO> getScreeningByUuid(@PathVariable String uuid) {
         return screeningService.findByUuid(uuid)
+                .map(ScreeningMapper::toReadDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/by-movie/{movieId}")
-    public ResponseEntity<List<Screening>> getScreeningsByMovie(@PathVariable Long movieId) {
-        return ResponseEntity.ok(screeningService.findByMovieId(movieId));
+    public ResponseEntity<List<ScreeningReadDTO>> getScreeningsByMovie(@PathVariable Long movieId) {
+        List<ScreeningReadDTO> screenings = screeningService.findByMovieId(movieId).stream().map(ScreeningMapper::toReadDTO).toList();
+        return ResponseEntity.ok(screenings);
     }
 
     @GetMapping("/by-hall/{hallId}")
-    public ResponseEntity<List<Screening>> getScreeningsByHall(@PathVariable Long hallId) {
-        return ResponseEntity.ok(screeningService.findByCinemaHallId(hallId));
+    public ResponseEntity<List<ScreeningReadDTO>> getScreeningsByHall(@PathVariable Long hallId) {
+       List<ScreeningReadDTO> screenings = screeningService.findByCinemaHallId(hallId).stream().map(ScreeningMapper::toReadDTO).toList();
+       return ResponseEntity.ok(screenings);
     }
-
 
     @PostMapping
-    public ResponseEntity<Screening> createScreening(@RequestBody Screening screening) {
-        return ResponseEntity.ok(screeningService.save(screening));
+    public ResponseEntity<ScreeningReadDTO> createScreening(@RequestBody ScreeningCreateDTO dto) {
+        Screening saved = screeningService.createScreening(dto);
+        return ResponseEntity.ok(ScreeningMapper.toReadDTO(saved));
     }
+
+
+
 
 }
