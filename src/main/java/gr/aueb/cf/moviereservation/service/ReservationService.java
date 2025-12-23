@@ -1,5 +1,7 @@
 package gr.aueb.cf.moviereservation.service;
 
+import gr.aueb.cf.moviereservation.core.enums.ReservationStatus;
+import gr.aueb.cf.moviereservation.dto.ReservationCreateDTO;
 import gr.aueb.cf.moviereservation.model.Reservation;
 import gr.aueb.cf.moviereservation.model.Screening;
 import gr.aueb.cf.moviereservation.model.User;
@@ -35,17 +37,19 @@ public class ReservationService {
         return reservationRepository.findByScreening_Id(screeningId);
     }
 
-    public Reservation createReservation(Long screeningId, String seatNumber) {
+    public Reservation createReservation(ReservationCreateDTO dto) {
         User user = (User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
 
-        Screening screening = screeningRepository.findById(screeningId).orElseThrow(() -> new RuntimeException("Screning not found"));
+        Screening screening = screeningRepository.findById(dto.screeningId()).orElseThrow(() -> new RuntimeException("Screening not found"));
+
         Reservation reservation = Reservation.builder()
                 .user(user)
                 .screening(screening)
-                .seatNumber(seatNumber)
+                .seatNumber(dto.seatNumber())
+                .status(ReservationStatus.CREATED)
                 .isActive(true)
                 .build();
 

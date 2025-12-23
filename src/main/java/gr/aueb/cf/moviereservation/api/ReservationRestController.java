@@ -1,7 +1,10 @@
 package gr.aueb.cf.moviereservation.api;
 
 
+import gr.aueb.cf.moviereservation.dto.ReservationCreateDTO;
+import gr.aueb.cf.moviereservation.dto.ReservationReadDTO;
 import gr.aueb.cf.moviereservation.dto.ReservationRequestDTO;
+import gr.aueb.cf.moviereservation.mapper.ReservationMapper;
 import gr.aueb.cf.moviereservation.model.Reservation;
 import gr.aueb.cf.moviereservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -18,32 +21,36 @@ public class ReservationRestController {
     private final ReservationService reservationService;
 
     @GetMapping
-    public ResponseEntity<List<Reservation>> getAllReservations() {
-        return ResponseEntity.ok(reservationService.findAll());
+    public ResponseEntity<List<ReservationReadDTO>> getAllReservations() {
+        List<ReservationReadDTO> reservations = reservationService.findAll().stream().map(ReservationMapper::toReadDTO).toList();
+        return ResponseEntity.ok(reservations);
     }
 
     @PostMapping
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationRequestDTO dto) {
-        Reservation reservation = reservationService.createReservation(dto.getScreeningId(), dto.getSeatNumber());
-        return ResponseEntity.ok(reservation);
+    public ResponseEntity<ReservationReadDTO> createReservation(@RequestBody ReservationCreateDTO dto) {
+        Reservation saved = reservationService.createReservation(dto);
+        return ResponseEntity.ok(ReservationMapper.toReadDTO(saved));
     }
 
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<Reservation> getReservationByUuid(@PathVariable String uuid) {
+    public ResponseEntity<ReservationReadDTO> getReservationByUuid(@PathVariable String uuid) {
         return reservationService.findByUuid(uuid)
+                .map(ReservationMapper::toReadDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/by-user/{userId}")
-    public ResponseEntity<List<Reservation>> getReservationsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(reservationService.findByUserId(userId));
+    public ResponseEntity<List<ReservationReadDTO>> getReservationsByUser(@PathVariable Long userId) {
+        List<ReservationReadDTO> reservations = reservationService.findByUserId(userId).stream().map(ReservationMapper::toReadDTO).toList();
+        return ResponseEntity.ok(reservations);
     }
 
     @GetMapping("/by-screening/{screeningId}")
-    public ResponseEntity<List<Reservation>> getReservationsByScreening(@PathVariable Long screeningId) {
-        return ResponseEntity.ok(reservationService.findByScreeningId(screeningId));
+    public ResponseEntity<List<ReservationReadDTO>> getReservationsByScreening(@PathVariable Long screeningId) {
+        List<ReservationReadDTO> reservations = reservationService.findByScreeningId(screeningId).stream().map(ReservationMapper::toReadDTO).toList();
+        return ResponseEntity.ok(reservations);
     }
 
 
