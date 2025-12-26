@@ -20,6 +20,7 @@ public class AuthRestController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+
         AuthenticationResponseDTO authenticationResponseDTO = authenticationService.login(authenticationRequestDTO);
         return new ResponseEntity<>(authenticationResponseDTO, HttpStatus.OK);
 
