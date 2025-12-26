@@ -32,15 +32,18 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                            .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
                             .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                            .requestMatchers("/api/auth/login").permitAll()
-                            .requestMatchers("/api/movies/**").permitAll()
-//                            .requestMatchers("/api/users").permitAll()
-                            .requestMatchers("/api/screenings/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/movies/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/screenings/**").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/cinema-halls/**").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/cinema-halls/**").hasRole("ADMIN")
                             .requestMatchers("/api/reservations/**").authenticated()
                             .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "USER")
-                            .requestMatchers("/**").authenticated()
-                        )
+                            .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                            .anyRequest().authenticated()
+
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
