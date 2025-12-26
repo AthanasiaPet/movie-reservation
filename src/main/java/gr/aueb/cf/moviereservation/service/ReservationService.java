@@ -1,6 +1,8 @@
 package gr.aueb.cf.moviereservation.service;
 
 import gr.aueb.cf.moviereservation.core.enums.ReservationStatus;
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceAlreadyExistsException;
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceNotFoundException;
 import gr.aueb.cf.moviereservation.dto.ReservationCreateDTO;
 import gr.aueb.cf.moviereservation.model.Reservation;
 import gr.aueb.cf.moviereservation.model.Screening;
@@ -43,7 +45,11 @@ public class ReservationService {
                 .getAuthentication()
                 .getPrincipal();
 
-        Screening screening = screeningRepository.findById(dto.screeningId()).orElseThrow(() -> new RuntimeException("Screening not found"));
+        Screening screening = screeningRepository.findById(dto.screeningId()).orElseThrow(() -> new ResourceNotFoundException("Screening", "id", dto.screeningId()));
+
+        if (reservationRepository.existsByScreening_IdAndSeatNumber(dto.screeningId(), dto.seatNumber())) {
+            throw new ResourceAlreadyExistsException("Reservation", "seatNumber", dto.seatNumber());
+        }
 
         Reservation reservation = Reservation.builder()
                 .user(user)
@@ -55,6 +61,7 @@ public class ReservationService {
 
 
         return reservationRepository.save(reservation);
-    }
 
+
+    }
 }

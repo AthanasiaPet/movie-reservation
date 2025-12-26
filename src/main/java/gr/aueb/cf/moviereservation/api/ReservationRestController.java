@@ -3,7 +3,6 @@ package gr.aueb.cf.moviereservation.api;
 
 import gr.aueb.cf.moviereservation.dto.ReservationCreateDTO;
 import gr.aueb.cf.moviereservation.dto.ReservationReadDTO;
-import gr.aueb.cf.moviereservation.dto.ReservationRequestDTO;
 import gr.aueb.cf.moviereservation.mapper.ReservationMapper;
 import gr.aueb.cf.moviereservation.model.Reservation;
 import gr.aueb.cf.moviereservation.service.ReservationService;

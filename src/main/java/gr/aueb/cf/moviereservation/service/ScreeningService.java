@@ -1,6 +1,7 @@
 package gr.aueb.cf.moviereservation.service;
 
 
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceNotFoundException;
 import gr.aueb.cf.moviereservation.dto.ScreeningCreateDTO;
 import gr.aueb.cf.moviereservation.model.CinemaHall;
 import gr.aueb.cf.moviereservation.model.Movie;
@@ -42,10 +43,10 @@ public class ScreeningService {
     public Screening createScreening(ScreeningCreateDTO dto) {
 
         Movie movie = movieRepository.findById(dto.movieId())
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Movie", "id", dto.movieId()));
 
         CinemaHall hall = cinemaHallRepository.findById(dto.cinemaHallId())
-                .orElseThrow(() -> new RuntimeException("Cinema hall not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cinema hall", "id", dto.cinemaHallId()));
 
         Screening screening = Screening.builder()
                 .movie(movie)

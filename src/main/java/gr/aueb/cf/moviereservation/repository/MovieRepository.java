@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     Optional<Movie> findByUuid(String uuid);
     Optional<Movie> findByTitle(String title);
+    boolean existsByTitle(String title);
+
 
 
 }

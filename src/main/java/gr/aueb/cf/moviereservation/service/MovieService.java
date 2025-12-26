@@ -1,5 +1,6 @@
 package gr.aueb.cf.moviereservation.service;
 
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceAlreadyExistsException;
 import gr.aueb.cf.moviereservation.model.Movie;
 import gr.aueb.cf.moviereservation.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,13 @@ public class MovieService {
     }
 
     public Movie save(Movie movie) {
+
+        if (movieRepository.existsByTitle(movie.getTitle())) {
+            throw new ResourceAlreadyExistsException("Movie", "title", movie.getTitle());
+        }
+
         return movieRepository.save(movie);
     }
-
-
 
 
 }

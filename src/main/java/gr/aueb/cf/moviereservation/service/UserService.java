@@ -1,6 +1,7 @@
 package gr.aueb.cf.moviereservation.service;
 
 import gr.aueb.cf.moviereservation.core.enums.Role;
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceAlreadyExistsException;
 import gr.aueb.cf.moviereservation.dto.UserRegisterDTO;
 import gr.aueb.cf.moviereservation.model.User;
 import gr.aueb.cf.moviereservation.repository.UserRepository;
@@ -19,6 +20,14 @@ public class UserService {
 
     public User register(UserRegisterDTO dto) {
 
+        if (userRepository.findByUsername(dto.username()).isPresent()) {
+            throw new ResourceAlreadyExistsException("User", "username", dto.username());
+        }
+
+        if (userRepository.findByEmail(dto.email()).isPresent()) {
+            throw new ResourceAlreadyExistsException("User", "email", dto.email());
+        }
+
         User user = User.builder()
                 .username(dto.username())
                 .email(dto.email())
@@ -29,14 +38,5 @@ public class UserService {
 
         return userRepository.save(user);
     }
-
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
-    }
-
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
 
 }

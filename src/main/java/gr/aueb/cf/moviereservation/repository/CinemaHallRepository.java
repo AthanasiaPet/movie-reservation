@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface CinemaHallRepository extends JpaRepository<CinemaHall, Long> {
     Optional<CinemaHall> findByUuid(String uuid);
+    boolean existsByHallName(String hallName);
+
 
 }
