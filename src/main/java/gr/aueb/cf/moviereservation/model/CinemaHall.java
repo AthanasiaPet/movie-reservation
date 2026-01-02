@@ -23,7 +23,7 @@ public class CinemaHall {
     @Column(unique = true)
     private String uuid;
 
-    @Column(nullable = false)
+    @Column(name = "hall_name", nullable = false)
     private String hallName;
 
     @Column(nullable = false)
