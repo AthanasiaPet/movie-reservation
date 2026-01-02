@@ -22,7 +22,7 @@ public class Reservation {
     @Column(unique = true)
     private String uuid;
 
-    @Column(nullable = false)
+    @Column(name = "seat_number", nullable = false)
     private String seatNumber;
 
     @Enumerated(EnumType.STRING)
