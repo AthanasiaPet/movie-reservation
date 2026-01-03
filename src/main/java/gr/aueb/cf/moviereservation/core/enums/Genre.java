@@ -4,5 +4,6 @@ public enum Genre {
     SCIENCE_FICTION,
     ACTION,
     ROMANTIC,
-    COMEDY
+    COMEDY,
+    FAMILY
 }

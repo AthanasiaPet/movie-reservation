@@ -6,6 +6,8 @@ import gr.aueb.cf.moviereservation.dto.MovieReadDTO;
 import gr.aueb.cf.moviereservation.mapper.MovieMapper;
 import gr.aueb.cf.moviereservation.model.Movie;
 import gr.aueb.cf.moviereservation.service.MovieService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +18,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/movies")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 public class MovieRestController {
 
     private final MovieService movieService;
+
+    @Operation(
+            summary = "Get all movies",
+            description = "Returns a list of all available movies."
+    )
 
     @GetMapping
     public ResponseEntity<List<MovieReadDTO>> getAllMovies() {
@@ -30,6 +38,11 @@ public class MovieRestController {
         return ResponseEntity.ok(movies);
     }
 
+    @Operation(
+            summary = "Get movie by UUID",
+            description = "Returns a movie identified by its UUID."
+    )
+
     @GetMapping("/{uuid}")
     public ResponseEntity<MovieReadDTO> getMovieByUuid(@PathVariable String uuid) {
         return movieService.findByUuid(uuid)
@@ -37,6 +50,11 @@ public class MovieRestController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @Operation(
+            summary = "Create a movie",
+            description = "Creates a new movie. Requires authentication."
+    )
 
     @PostMapping
     public ResponseEntity<MovieReadDTO> createMovie(@RequestBody MovieCreateDTO dto) {
