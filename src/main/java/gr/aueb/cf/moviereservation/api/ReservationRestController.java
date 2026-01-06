@@ -49,7 +49,7 @@ public class ReservationRestController {
             description = "Returns a reservation identified by its UUID."
     )
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/by-uuid/{uuid}")
     public ResponseEntity<ReservationReadDTO> getReservationByUuid(@PathVariable String uuid) {
         return reservationService.findByUuid(uuid)
                 .map(ReservationMapper::toReadDTO)
@@ -78,6 +78,17 @@ public class ReservationRestController {
         List<ReservationReadDTO> reservations = reservationService.findByScreeningId(screeningId).stream().map(ReservationMapper::toReadDTO).toList();
         return ResponseEntity.ok(reservations);
     }
+
+    @Operation(
+            summary = "Get my reservations",
+            description = "Returns reservations of the currently authenticated user."
+    )
+    @GetMapping("/my")
+    public ResponseEntity<List<ReservationReadDTO>> getMyReservations() {
+        List<ReservationReadDTO> reservations = reservationService.findMyReservations().stream().map(ReservationMapper::toReadDTO).toList();
+        return ResponseEntity.ok(reservations);
+    }
+
 
 
 }

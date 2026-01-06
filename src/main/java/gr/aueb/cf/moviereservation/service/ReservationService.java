@@ -64,4 +64,10 @@ public class ReservationService {
 
 
     }
+
+    public List<Reservation> findMyReservations() {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return reservationRepository.findByUser_Id(user.getId());
+    }
+
 }
