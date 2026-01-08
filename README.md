@@ -14,6 +14,10 @@ The domain model consists of the following entities:
 
 The database was designed using a **Model-First** approach, where entities and relationships were defined in the backend and mapped to a MySQL database using JPA/Hibernate.
 
+# Database Setup
+
+The application uses a MySQL database. The database schema is provided in the /db/schema_movie_reservation.sql file. Database credentials are intentionally excluded for security reasons. 
+
 # Architecture
 The backend follows a layered architecture: Controller Layer (REST API), Service Layer (Business Logic), Repository Layer (Data Access)
 This structure ensures separation of concerns and maintainability.
