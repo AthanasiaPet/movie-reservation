@@ -36,12 +36,12 @@ Path: postman/MovieReservationApp.postman_collection.json
 
 
 # Build and Run Instructions
-#### Requirements
+## Requirements
 - Java 17+
 - Gradle
 - MySQL
 
- #### Steps
+ ## Steps
 1. Create a MySQL database 
 2. Configure database connection in `application-dev.properties`
 3. Run the application using Gradle:
