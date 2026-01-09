@@ -35,8 +35,19 @@ REST API endpoints were tested using **Postman** (integration testing). Authenti
 Path: postman/MovieReservationApp.postman_collection.json
 
 
-# Build and Run instructions
-Java 17+, Gradle, MySQL. The backend application runs on http://localhost:8080. The backend is deployed locally for development purposes.
+# Build and Run Instructions
+## Requirements
+- Java 17+
+- Gradle
+- MySQL
+
+- #### Steps
+1. Create a MySQL database 
+2. Configure database connection in `application-dev.properties`
+3. Run the application using Gradle:
+   ```bash
+   ./gradlew bootRun
+ The backend application runs on http://localhost:8080. The backend is deployed locally for development purposes.
 
 # Frontend Repository:
 https://github.com/AthanasiaPet/movie-reservation-react
