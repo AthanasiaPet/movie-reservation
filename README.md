@@ -31,7 +31,7 @@ Authentication is implemented using **JSON Web Tokens**. Spring Security is used
 The REST API is documented using **Swagger**. After starting the backend application, Swagger UI is available at: http://localhost:8080/swagger-ui.html
 
 # Testing
-REST API endpoints were tested using **Postman** (integration testing). Authentication, authorization, and reservation flows were verified through API calls. 
+REST API endpoints were tested using **Postman** (integration testing). Basic unit testing was implemented for service layer components. Authentication, authorization, and reservation flows were verified through API calls. 
 Path: postman/MovieReservationApp.postman_collection.json
 
 
