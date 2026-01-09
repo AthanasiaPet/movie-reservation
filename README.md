@@ -16,7 +16,7 @@ The database was designed using a **Model-First** approach, where entities and r
 
 # Database Setup
 
-The application uses a MySQL database. The database schema is provided in the /db/schema_movie_reservation.sql file. Database credentials are intentionally excluded for security reasons. 
+The application uses a MySQL database. The database schema is provided in the `/db/schema_movie_reservation.sql` file. Database credentials are intentionally excluded for security reasons. 
 
 # Architecture
 The backend follows a layered architecture: Controller Layer (REST API), Service Layer (Business Logic), Repository Layer (Data Access)
