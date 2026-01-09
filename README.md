@@ -47,6 +47,15 @@ Path: postman/MovieReservationApp.postman_collection.json
 3. Run the application using Gradle:
    ```bash
    ./gradlew bootRun
+
+ #### Authentication Flow
+
+To obtain a JWT token:
+
+1. Register a new user via POST /api/users
+2. Login via POST /api/auth/login
+3. Use the returned JWT token in Swagger ("Authorize" button)
+   
  The backend application runs on http://localhost:8080. The backend is deployed locally for development purposes.
 
 # Frontend Repository:
