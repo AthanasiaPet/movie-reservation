@@ -36,7 +36,7 @@ Path: postman/MovieReservationApp.postman_collection.json
 
 
 # Build and Run Instructions
-## Requirements
+#### Requirements
 - Java 17+
 - Gradle
 - MySQL
