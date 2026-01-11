@@ -6,12 +6,12 @@ import gr.aueb.cf.moviereservation.dto.UserRegisterDTO;
 import gr.aueb.cf.moviereservation.model.User;
 import gr.aueb.cf.moviereservation.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,11 +22,15 @@ public class UserService {
 
     public User register(UserRegisterDTO dto) {
 
+        log.info("Attempting to register user with username={} and email={}", dto.username(), dto.email());
+
         if (userRepository.findByUsername(dto.username()).isPresent()) {
+            log.warn("Username already exists: {}", dto.username());
             throw new ResourceAlreadyExistsException("User", "username", dto.username());
         }
 
         if (userRepository.findByEmail(dto.email()).isPresent()) {
+            log.warn("Email already exists: {}", dto.email());
             throw new ResourceAlreadyExistsException("User", "email", dto.email());
         }
 
@@ -38,7 +42,12 @@ public class UserService {
                 .isActive(true)
                 .build();
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        log.info("User with id={} and username={} registered successfully",
+                savedUser.getId(), savedUser.getUsername());
+
+        return savedUser;
     }
 
 }

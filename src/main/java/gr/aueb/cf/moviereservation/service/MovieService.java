@@ -4,12 +4,14 @@ import gr.aueb.cf.moviereservation.core.exceptions.ResourceAlreadyExistsExceptio
 import gr.aueb.cf.moviereservation.model.Movie;
 import gr.aueb.cf.moviereservation.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -19,21 +21,28 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public List<Movie> findAllMovies() {
+        log.debug("Fetching all movies");
         return movieRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     public Optional<Movie> findByUuid(String uuid) {
+        log.debug("Fetching movie with uuid={}", uuid);
         return movieRepository.findByUuid(uuid);
     }
 
     public Movie save(Movie movie) {
 
         if (movieRepository.existsByTitle(movie.getTitle())) {
+            log.warn("Attempt to create movie with existing title={}", movie.getTitle());
             throw new ResourceAlreadyExistsException("Movie", "title", movie.getTitle());
         }
 
-        return movieRepository.save(movie);
+        Movie savedMovie = movieRepository.save(movie);
+        log.info("Movie with id={} and title={} created successfully", savedMovie.getId(), savedMovie.getTitle());
+
+        return savedMovie;
+
     }
 
 
