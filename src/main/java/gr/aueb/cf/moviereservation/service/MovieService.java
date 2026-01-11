@@ -8,17 +8,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MovieService {
 
     private final MovieRepository movieRepository;
 
+    @Transactional(readOnly = true)
     public List<Movie> findAllMovies() {
         return movieRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Movie> findByUuid(String uuid) {
         return movieRepository.findByUuid(uuid);
     }

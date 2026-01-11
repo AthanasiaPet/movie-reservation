@@ -9,6 +9,7 @@ import gr.aueb.cf.moviereservation.model.Screening;
 import gr.aueb.cf.moviereservation.repository.CinemaHallRepository;
 import gr.aueb.cf.moviereservation.repository.MovieRepository;
 import gr.aueb.cf.moviereservation.repository.ScreeningRepository;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,24 +18,29 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ScreeningService {
 
     private final ScreeningRepository screeningRepository;
     private final MovieRepository movieRepository;
     private final CinemaHallRepository cinemaHallRepository;
 
+    @Transactional(readOnly = true)
     public List<Screening> findAll() {
         return screeningRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Screening> findByUuid(String uuid) {
         return screeningRepository.findByUuid(uuid);
     }
 
+    @Transactional(readOnly = true)
     public List<Screening> findByMovieId(Long movieId) {
         return screeningRepository.findByMovie_Id(movieId);
     }
 
+    @Transactional(readOnly = true)
     public List<Screening> findByCinemaHallId(Long cinemaHallId) {
         return screeningRepository.findByCinemaHall_Id(cinemaHallId);
     }
