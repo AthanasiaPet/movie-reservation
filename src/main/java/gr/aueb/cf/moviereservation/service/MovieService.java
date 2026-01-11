@@ -1,6 +1,7 @@
 package gr.aueb.cf.moviereservation.service;
 
 import gr.aueb.cf.moviereservation.core.exceptions.ResourceAlreadyExistsException;
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceNotFoundException;
 import gr.aueb.cf.moviereservation.model.Movie;
 import gr.aueb.cf.moviereservation.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -26,9 +26,13 @@ public class MovieService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Movie> findByUuid(String uuid) {
+    public Movie findByUuid(String uuid) {
         log.debug("Fetching movie with uuid={}", uuid);
-        return movieRepository.findByUuid(uuid);
+
+         return movieRepository.findByUuid(uuid).orElseThrow(() -> {
+             log.warn("Movie not found with uuid={}", uuid);
+             return new ResourceNotFoundException("Movie", "uuid", uuid);
+         });
     }
 
     public Movie save(Movie movie) {

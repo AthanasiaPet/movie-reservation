@@ -36,10 +36,15 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Reservation> findByUuid(String uuid) {
+    public Reservation findByUuid(String uuid) {
         log.debug("Fetching reservation with uuid={}", uuid);
-        return reservationRepository.findByUuid(uuid);
+
+        return reservationRepository.findByUuid(uuid).orElseThrow(() -> {
+                    log.warn("Reservation not found with uuid={}", uuid);
+                    return new ResourceNotFoundException("Reservation", "uuid", uuid);
+                });
     }
+
 
     @Transactional(readOnly = true)
     public List<Reservation> findByUserId(Long userId) {

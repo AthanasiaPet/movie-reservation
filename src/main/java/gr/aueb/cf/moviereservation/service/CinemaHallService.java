@@ -1,6 +1,7 @@
 package gr.aueb.cf.moviereservation.service;
 
 import gr.aueb.cf.moviereservation.core.exceptions.ResourceAlreadyExistsException;
+import gr.aueb.cf.moviereservation.core.exceptions.ResourceNotFoundException;
 import gr.aueb.cf.moviereservation.model.CinemaHall;
 import gr.aueb.cf.moviereservation.repository.CinemaHallRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,15 @@ public class CinemaHallService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<CinemaHall> findById(Long id) {
+    public CinemaHall findById(Long id) {
         log.debug("Fetching cinema hall with id={}", id);
-        return cinemaHallRepository.findById(id);
+
+        return cinemaHallRepository.findById(id).orElseThrow(() -> {
+           log.warn("Cinema hall not found with id={}", id);
+           return new ResourceNotFoundException("CinemaHall", "id", id);
+                });
     }
+
 
 
     public CinemaHall save(CinemaHall hall) {

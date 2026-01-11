@@ -49,13 +49,12 @@ public class ReservationRestController {
             description = "Returns a reservation identified by its UUID."
     )
 
-    @GetMapping("/by-uuid/{uuid}")
-    public ResponseEntity<ReservationReadDTO> getReservationByUuid(@PathVariable String uuid) {
-        return reservationService.findByUuid(uuid)
-                .map(ReservationMapper::toReadDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{uuid}")
+    public ResponseEntity<ReservationReadDTO> getReservation(@PathVariable String uuid) {
+        Reservation reservation = reservationService.findByUuid(uuid);
+        return ResponseEntity.ok(ReservationMapper.toReadDTO(reservation));
     }
+
 
     @Operation(
             summary = "Get reservations by user",

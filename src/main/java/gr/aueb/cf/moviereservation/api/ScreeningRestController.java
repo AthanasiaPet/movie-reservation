@@ -41,11 +41,13 @@ public class ScreeningRestController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<ScreeningReadDTO> getScreeningByUuid(@PathVariable String uuid) {
-        return screeningService.findByUuid(uuid)
-                .map(ScreeningMapper::toReadDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Screening screening = screeningService.findByUuid(uuid);
+
+        return ResponseEntity.ok(
+                ScreeningMapper.toReadDTO(screening)
+        );
     }
+
 
     @Operation(
             summary = "Get screenings by movie",

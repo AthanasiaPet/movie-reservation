@@ -45,10 +45,11 @@ public class MovieRestController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<MovieReadDTO> getMovieByUuid(@PathVariable String uuid) {
-        return movieService.findByUuid(uuid)
-                .map(MovieMapper::toReadDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Movie movie = movieService.findByUuid(uuid);
+
+        return ResponseEntity.ok(
+                MovieMapper.toReadDTO(movie)
+        );
     }
 
     @Operation(

@@ -53,10 +53,12 @@ public class CinemaHallRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CinemaHallReadDTO> getHallById(@PathVariable Long id) {
-        return cinemaHallService.findById(id)
-                .map(CinemaHallMapper::toReadDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        CinemaHall hall = cinemaHallService.findById(id);
+
+        return ResponseEntity.ok(
+                CinemaHallMapper.toReadDTO(hall)
+        );
     }
+
 
 }

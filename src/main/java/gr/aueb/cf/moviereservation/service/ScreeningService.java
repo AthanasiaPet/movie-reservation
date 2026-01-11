@@ -34,9 +34,12 @@ public class ScreeningService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Screening> findByUuid(String uuid) {
+    public Screening findByUuid(String uuid) {
         log.debug("Fetching screening with uuid={}", uuid);
-        return screeningRepository.findByUuid(uuid);
+        return screeningRepository.findByUuid(uuid).orElseThrow(() -> {
+                    log.warn("Screening not found with uuid={}", uuid);
+                    return new ResourceNotFoundException("Screening", "uuid", uuid);
+                });
     }
 
     @Transactional(readOnly = true)
